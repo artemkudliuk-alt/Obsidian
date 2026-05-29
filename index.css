@@ -1,0 +1,546 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Cinzel:wght@400;500;600;700;800&family=Inter:wght@200;300;400;500;600;700&family=Space+Mono&display=swap');
+
+/* ==========================================================================
+   CSS CUSTOM VARIABLES & DESIGN TOKENS
+   ========================================================================== */
+:root {
+  --color-bg-base: #000000;
+  --color-bg-onyx: #0B0C10;
+  --color-text-primary: #FFFFFF;
+  --color-text-secondary: rgba(255, 255, 255, 0.7);
+  --color-text-muted: rgba(255, 255, 255, 0.4);
+  --color-accent-gold: #D4AF37; /* Champagne Gold matching luxury yacht evening lights */
+  --color-charcoal-dark: #121212;
+
+  --font-serif: 'Cinzel', serif;
+  --font-sans: 'Inter', sans-serif;
+  --font-mono: 'Space Mono', monospace;
+
+  --transition-premium: 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+  --margin-desktop: 50px;
+  --margin-desktop-top: 40px;
+}
+
+/* ==========================================================================
+   RESET & CORE LAYOUT SYSTEM
+   ========================================================================== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden; /* Strictly single-page application style, zero global scroll */
+  background-color: var(--color-bg-base);
+  font-family: var(--font-sans);
+  color: var(--color-text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ==========================================================================
+   BACKGROUND MEDIA ENGINE (obsidian_loop.mp4)
+   ========================================================================== */
+.video-background-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  background-color: var(--color-bg-onyx);
+  overflow: hidden;
+}
+
+#obsidian-video-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+  filter: brightness(0.85); /* Slightly dims video for dynamic contrast */
+  pointer-events: none; /* User clicks pass straight through to UI */
+  transform: translate3d(0, 0, 0); /* Force GPU acceleration */
+  will-change: transform;
+}
+
+/* ==========================================================================
+   TRANSLUCENT CONTRAST VIGNETTE (THE SHIELD)
+   ========================================================================== */
+.contrast-shield {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  /* Extra dark linear gradient shield to secure extreme legibility during translation animations */
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.98) 0%,
+    rgba(0, 0, 0, 0.88) 35%,
+    rgba(0, 0, 0, 0.55) 60%,
+    rgba(0, 0, 0, 0.2) 80%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  pointer-events: none;
+  mix-blend-mode: normal;
+  will-change: opacity;
+}
+
+/* Add an additional subtle vignette around all borders for a cinematic look */
+.cinematic-vignette {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  background: radial-gradient(
+    circle at center,
+    rgba(0, 0, 0, 0) 40%,
+    rgba(0, 0, 0, 0.7) 100%
+  );
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   FOREGROUND GRID LAYOUT CONTAINER
+   ========================================================================== */
+.foreground-layout {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+  pointer-events: none; /* Ignore pointer events on transparent layout grid */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: var(--margin-desktop-top) var(--margin-desktop) var(--margin-desktop) var(--margin-desktop);
+}
+
+/* ==========================================================================
+   HEADER SECTION & BRANDING LOGO (STRICTLY CENTERED top: 60px)
+   ========================================================================== */
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.brand-logo-container {
+  position: absolute;
+  top: 60px; /* Strict coordinates */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 4;
+  pointer-events: auto; /* Re-enable pointer events */
+  width: 240px; /* Monument scaling */
+  height: auto;
+  max-height: none;
+}
+
+.brand-logo-container a {
+  display: block;
+  text-decoration: none;
+}
+
+.brand-logo-container img {
+  width: 240px;
+  height: auto;
+  display: block;
+  image-rendering: -webkit-optimize-contrast; /* Sharp vector rendering */
+  transition: opacity var(--transition-premium), transform var(--transition-premium);
+}
+
+.brand-logo-container img:hover {
+  opacity: 0.95;
+  transform: scale(1.02);
+}
+
+.header-right {
+  position: fixed;
+  top: 45px;
+  right: var(--margin-desktop);
+  z-index: 4;
+  pointer-events: auto;
+}
+
+.phone-link {
+  color: var(--color-text-primary);
+  text-decoration: none;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.25em; /* Tracked wide grotesque layout style */
+  text-transform: uppercase;
+  transition: color var(--transition-premium), transform var(--transition-premium);
+  display: inline-block;
+  padding: 5px 0;
+  position: relative;
+}
+
+/* Premium bottom border slide-in animation for phone link */
+.phone-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background-color: var(--color-accent-gold);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.phone-link:hover {
+  color: var(--color-accent-gold);
+}
+
+.phone-link:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* ==========================================================================
+   LEFT-FLANK KINETIC CONTAINER (left: 12vw; top: 32vh;)
+   ========================================================================== */
+#kinetic-container {
+  position: absolute;
+  left: 12vw; /* Anchored coordinates lock */
+  top: 32vh;  /* Vertical anchoring lock */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  max-width: 650px;
+  z-index: 3;
+  pointer-events: none; /* Let clicks pass through empty spaces */
+  /* Dynamic Breathing Shimmer */
+  transform: translate(var(--mx-depth, 0px), var(--my-depth, 0px));
+  will-change: transform;
+}
+
+/* ==========================================================================
+   CONTRAST DEFENSE: AMBIENT RADIAL SHADOW (z-index: 1.5)
+   ========================================================================== */
+.layer.shadow-layer {
+  position: absolute;
+  top: -100px;
+  left: -100px;
+  width: calc(100% + 200px);
+  height: calc(100% + 200px);
+  z-index: 1.5; /* Positioned perfectly behind text layers */
+  pointer-events: none;
+}
+
+.shadow-overlay-glow {
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    circle at center,
+    rgba(0, 0, 0, 0.95) 0%,
+    rgba(0, 0, 0, 0.6) 45%,
+    rgba(0, 0, 0, 0) 75%
+  );
+  filter: blur(40px); /* Deep blur configuration */
+  border-radius: 50%;
+}
+
+/* ==========================================================================
+   INDEPENDENT STATIC LAYER STRUCTURES
+   ========================================================================== */
+.layer {
+  width: 100%;
+  display: block;
+  margin: 0;
+  padding: 0;
+}
+
+/* TEXT LAYERS (H1 + Description): Non-interactive, cursor passes through */
+.layer:not(:has(.cta)) {
+  pointer-events: none;
+}
+
+/* BUTTON LAYER (CTA): Interactive */
+.layer:has(.cta) {
+  pointer-events: auto;
+}
+
+/* ==========================================================================
+   LAYER 1 & 2: H1 TYPOGRAPHY & TITLES
+   ========================================================================== */
+.title-line-1, .title-line-2 {
+  font-family: 'Cormorant Garamond', var(--font-serif);
+  font-size: calc(3.8rem + 1.2vw);
+  font-weight: 800;
+  line-height: 0.95; /* Extra tightened leading for single solid luxury block look */
+  text-transform: uppercase;
+  color: var(--color-text-primary);
+  letter-spacing: -0.01em; /* Tight editorial tracking */
+  opacity: 0;
+  transform: translateY(30px);
+  animation: premiumFadeUp 1.2s cubic-bezier(0.19, 1, 0.22, 1) 0.3s forwards;
+  display: block;
+}
+
+/* ==========================================================================
+   LAYER 3: DESCRIPTION PARAGRAPH
+   ========================================================================== */
+.description {
+  font-family: var(--font-sans);
+  font-size: 1.2rem;
+  line-height: 1.6;
+  font-weight: 300; /* Delicately light font-weight for luxury contrast */
+  color: rgba(255, 255, 255, 0.7);
+  letter-spacing: 0.01em;
+  max-width: 540px;
+  margin-top: 2.5rem;
+  opacity: 0;
+  transform: translateY(30px);
+  animation: premiumFadeUp 1.2s cubic-bezier(0.19, 1, 0.22, 1) 0.5s forwards;
+  display: block;
+}
+
+/* ==========================================================================
+   LAYER 4: KINETIC INTERACTIVE BUTTON ("GET IN TOUCH")
+   ========================================================================== */
+.cta, .cta-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px 42px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50px; /* Capsule shape */
+  color: var(--color-text-primary);
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.2em; /* Sharp wide letter-spacing */
+  text-transform: uppercase;
+  cursor: pointer;
+  overflow: hidden;
+  position: relative;
+  margin-top: 2.5rem;
+  opacity: 0;
+  transform: translateY(30px);
+  animation: premiumFadeUp 1.2s cubic-bezier(0.19, 1, 0.22, 1) 0.7s forwards;
+  pointer-events: auto; /* Re-enable pointer events strictly for button hover states */
+  transition: all 0.3s ease; /* Butter smooth transitions */
+}
+
+/* Hover highlights */
+.cta:hover, .cta-button:hover {
+  transform: scale(1.05); /* Applied scale(1.05) */
+  background-color: #D4AF37; /* Luxury Gold fill */
+  border-color: #D4AF37;
+  color: var(--color-charcoal-dark);
+  box-shadow: 0 12px 35px rgba(212, 175, 55, 0.25);
+}
+
+.cta:active {
+  transform: scale(0.98);
+}
+
+/* ==========================================================================
+   FOOTER SECTION
+   ========================================================================== */
+.footer-container {
+  position: fixed;
+  bottom: var(--margin-desktop);
+  left: var(--margin-desktop);
+  right: var(--margin-desktop);
+  z-index: 4;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  pointer-events: none; /* Ignore pointer events on transparent footer frame */
+}
+
+.footer-item {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--color-text-muted);
+  pointer-events: auto; /* In case we want footer links interactive */
+  opacity: 0;
+  animation: premiumFadeIn 1.5s cubic-bezier(0.19, 1, 0.22, 1) 1s forwards;
+}
+
+.footer-left {
+  text-align: left;
+}
+
+.footer-right {
+  text-align: right;
+  text-decoration: none;
+  transition: color var(--transition-premium);
+}
+
+a.footer-right:hover {
+  color: var(--color-accent-gold);
+}
+
+/* ==========================================================================
+   HARDWARE-ACCELERATED KEYFRAMES
+   ========================================================================== */
+@keyframes premiumFadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(40px) translateZ(0);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) translateZ(0);
+  }
+}
+
+@keyframes premiumFadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN SYSTEM & ADAPTIVE VIEWPORTS
+   ========================================================================== */
+@media (max-width: 1024px) {
+  :root {
+    --margin-desktop: 40px;
+    --margin-desktop-top: 35px;
+  }
+  
+  .title-line-1, .title-line-2 {
+    font-size: calc(2.4rem + 1.5vw);
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --margin-desktop: 30px;
+    --margin-desktop-top: 30px;
+  }
+
+  .foreground-layout {
+    justify-content: flex-end; /* Push text content to the bottom-left on mobile */
+    padding-bottom: 120px; /* Make space for the stacked footer */
+  }
+
+  #kinetic-container {
+    position: relative;
+    left: 0;
+    top: 0;
+    max-width: 100%;
+    margin-bottom: 2rem;
+    padding-top: 140px; /* Clear centered mobile logo nicely */
+  }
+
+  .title-line-1, .title-line-2 {
+    font-size: 2.2rem;
+    line-height: 1.1;
+  }
+
+  .description {
+    font-size: 1.05rem;
+    margin-top: 1.5rem;
+    max-width: 100%;
+  }
+
+  .phone-link {
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+  }
+
+  .brand-logo-container {
+    position: absolute;
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 160px;
+  }
+  
+  .brand-logo-container img {
+    width: 160px;
+    height: auto;
+  }
+
+  .header-right {
+    top: 35px;
+    right: 30px;
+  }
+
+  .footer-container {
+    bottom: 30px;
+    left: 30px;
+    right: 30px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .footer-item {
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --margin-desktop: 20px;
+    --margin-desktop-top: 25px;
+  }
+
+  .brand-logo-container {
+    top: 25px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+  }
+  
+  .brand-logo-container img {
+    width: 120px;
+    height: auto;
+  }
+
+  .header-right {
+    top: 30px;
+    right: 20px;
+  }
+
+  .foreground-layout {
+    padding-bottom: 100px;
+  }
+
+  .title-line-1, .title-line-2 {
+    font-size: 1.85rem;
+  }
+
+  .description {
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+
+  .cta {
+    padding: 15px 32px;
+    font-size: 0.8rem;
+  }
+
+  .footer-container {
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+  }
+}
