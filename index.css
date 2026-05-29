@@ -164,50 +164,7 @@ html, body {
   transform: scale(1.02);
 }
 
-.header-right {
-  position: fixed;
-  top: 45px;
-  right: var(--margin-desktop);
-  z-index: 4;
-  pointer-events: auto;
-}
-
-.phone-link {
-  color: var(--color-text-primary);
-  text-decoration: none;
-  font-family: var(--font-sans);
-  font-size: 0.85rem;
-  font-weight: 500;
-  letter-spacing: 0.25em; /* Tracked wide grotesque layout style */
-  text-transform: uppercase;
-  transition: color var(--transition-premium), transform var(--transition-premium);
-  display: inline-block;
-  padding: 5px 0;
-  position: relative;
-}
-
-/* Premium bottom border slide-in animation for phone link */
-.phone-link::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 1px;
-  background-color: var(--color-accent-gold);
-  transform: scaleX(0);
-  transform-origin: right;
-  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-}
-
-.phone-link:hover {
-  color: var(--color-accent-gold);
-}
-
-.phone-link:hover::after {
-  transform: scaleX(1);
-  transform-origin: left;
-}
+/* Header styling cleaned: phone link removed */
 
 /* ==========================================================================
    LEFT-FLANK KINETIC CONTAINER (left: 12vw; top: 32vh;)
@@ -223,8 +180,8 @@ html, body {
   max-width: 650px;
   z-index: 3;
   pointer-events: none; /* Let clicks pass through empty spaces */
-  /* Dynamic Breathing Shimmer */
-  transform: translate(var(--mx-depth, 0px), var(--my-depth, 0px));
+  /* GPU-Accelerated Micro Drift Animation */
+  animation: subtleMicroDrift 35s ease-in-out infinite;
   will-change: transform;
 }
 
@@ -355,19 +312,19 @@ html, body {
    ========================================================================== */
 .footer-container {
   position: fixed;
-  bottom: var(--margin-desktop);
-  left: var(--margin-desktop);
-  right: var(--margin-desktop);
+  bottom: var(--margin-desktop); /* Original coordinates */
+  left: var(--margin-desktop); /* Original coordinates */
+  right: var(--margin-desktop); /* Original coordinates */
   z-index: 4;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start; /* Reverted single child credits back to bottom-left corner */
   align-items: center;
   pointer-events: none; /* Ignore pointer events on transparent footer frame */
 }
 
 .footer-item {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
+  font-family: var(--font-sans); /* Elegant sans-serif Inter typography */
+  font-size: 0.45rem; /* 40% size reduction (7.2px) for discreet designer signature */
   font-weight: 400;
   text-transform: uppercase;
   letter-spacing: 0.15em;
@@ -377,18 +334,17 @@ html, body {
   animation: premiumFadeIn 1.5s cubic-bezier(0.19, 1, 0.22, 1) 1s forwards;
 }
 
-.footer-left {
-  text-align: left;
-}
-
-.footer-right {
-  text-align: right;
+.nextweb-credit {
   text-decoration: none;
-  transition: color var(--transition-premium);
+  cursor: pointer;
+  transition: color 0.8s ease; /* Premium slow 0.8s transition */
 }
 
-a.footer-right:hover {
-  color: var(--color-accent-gold);
+.nextweb-credit:hover {
+  color: #D6B36A; /* Warm Yacht-Gold */
+  text-decoration: none;
+  box-shadow: none;
+  text-shadow: none;
 }
 
 /* ==========================================================================
@@ -414,6 +370,62 @@ a.footer-right:hover {
   }
 }
 
+@keyframes subtleMicroDrift {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  25% {
+    transform: translate3d(1.5px, -1px, 0);
+  }
+  50% {
+    transform: translate3d(-1px, 1.5px, 0);
+  }
+  75% {
+    transform: translate3d(-1.5px, -0.5px, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* ==========================================================================
+   PREMIUM INTERACTIVE EMAIL ELEMENT (office@obsidian.com)
+   ========================================================================== */
+.email-contact-link {
+  font-family: var(--font-sans); /* Elegant sans-serif Inter typography */
+  font-size: 0.75rem; /* Exactly matches CREATED BY NEXTWEB */
+  font-weight: 400; /* Exactly matches CREATED BY NEXTWEB */
+  letter-spacing: 0.15em; /* Exactly matches CREATED BY NEXTWEB */
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.4); /* Exactly matches CREATED BY NEXTWEB (--color-text-muted) */
+  text-decoration: none;
+  cursor: pointer;
+  display: inline-block;
+  transition: color 300ms cubic-bezier(0.25, 1, 0.5, 1);
+  pointer-events: auto; /* Re-enable pointer interactions */
+}
+
+.email-contact-link:hover {
+  color: #D6B36A; /* Warm Yacht-Gold */
+  text-decoration: none;
+  box-shadow: none;
+  text-shadow: none;
+}
+
+/* Desktop positioning */
+@media (min-width: 769px) {
+  .desktop-only-email {
+    position: fixed;
+    top: 65px; /* Lowered 20px from 45px for luxury visual spacing */
+    right: 48px;
+    z-index: 4;
+    display: inline-block !important;
+  }
+  .mobile-only-email {
+    display: none !important;
+  }
+}
+
 /* ==========================================================================
    RESPONSIVE DESIGN SYSTEM & ADAPTIVE VIEWPORTS
    ========================================================================== */
@@ -435,8 +447,8 @@ a.footer-right:hover {
   }
 
   .foreground-layout {
-    justify-content: flex-end; /* Push text content to the bottom-left on mobile */
-    padding-bottom: 120px; /* Make space for the stacked footer */
+    justify-content: space-between; /* Secure bottom footer clearance */
+    padding-bottom: 60px; /* Safe padding for centered credits */
   }
 
   #kinetic-container {
@@ -444,24 +456,31 @@ a.footer-right:hover {
     left: 0;
     top: 0;
     max-width: 100%;
+    margin-top: 140px; /* Safe gap below centered logo */
     margin-bottom: 2rem;
-    padding-top: 140px; /* Clear centered mobile logo nicely */
+    align-items: center; /* Center-align flex items */
+    text-align: center; /* Center-align text */
+    padding: 0 15px; /* Side padding to prevent cropping */
   }
 
   .title-line-1, .title-line-2 {
     font-size: 2.2rem;
     line-height: 1.1;
+    text-align: center;
+    width: 100%;
   }
 
   .description {
     font-size: 1.05rem;
-    margin-top: 1.5rem;
+    margin-top: 28px; /* Strict 28px vertical spacing rhythm */
     max-width: 100%;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
   }
 
-  .phone-link {
-    font-size: 0.75rem;
-    letter-spacing: 0.15em;
+  .cta, .cta-button {
+    margin-top: 28px; /* Strict 28px vertical spacing rhythm */
   }
 
   .brand-logo-container {
@@ -475,25 +494,34 @@ a.footer-right:hover {
   .brand-logo-container img {
     width: 160px;
     height: auto;
-  }
-
-  .header-right {
-    top: 35px;
-    right: 30px;
+    margin: 0 auto;
   }
 
   .footer-container {
-    bottom: 30px;
-    left: 30px;
-    right: 30px;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
+    position: relative;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    justify-content: center; /* Center footer credits on mobile */
+    align-items: center;
+    width: 100%;
   }
 
   .footer-item {
-    font-size: 0.65rem;
-    letter-spacing: 0.12em;
+    font-size: 0.45rem; /* Unified designer signature micro sizing */
+    letter-spacing: 0.15em; /* Preserved letter spacing */
+    text-align: center;
+  }
+
+  .desktop-only-email {
+    display: none !important;
+  }
+
+  .mobile-only-email {
+    display: block !important;
+    margin-top: 28px; /* Strict 28px vertical spacing rhythm */
+    text-align: center;
+    width: 100%;
   }
 }
 
@@ -515,13 +543,8 @@ a.footer-right:hover {
     height: auto;
   }
 
-  .header-right {
-    top: 30px;
-    right: 20px;
-  }
-
-  .foreground-layout {
-    padding-bottom: 100px;
+  #kinetic-container {
+    margin-top: 100px; /* Tighten for small screens */
   }
 
   .title-line-1, .title-line-2 {
@@ -531,16 +554,12 @@ a.footer-right:hover {
   .description {
     font-size: 0.95rem;
     line-height: 1.5;
+    margin-top: 28px; /* Strict 28px spacing rhythm */
   }
 
-  .cta {
+  .cta, .cta-button {
     padding: 15px 32px;
     font-size: 0.8rem;
-  }
-
-  .footer-container {
-    bottom: 20px;
-    left: 20px;
-    right: 20px;
+    margin-top: 28px; /* Strict 28px spacing rhythm */
   }
 }
